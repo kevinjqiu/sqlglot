@@ -1068,6 +1068,13 @@ class TestDuckDB(Validator):
             },
         )
 
+        self.validate_all(
+            "CAST('2024-08-06 09:10:00.000' AS TIMESTAMP) AT TIME ZONE 'America/Los_Angeles' AT TIME ZONE 'America/New_York'",
+            write={
+                "snowflake": "CONVERT_TIMEZONE('America/Los_Angeles', 'America/New_York', CAST('2024-08-06 09:10:00.000' AS TIMESTAMP))",
+            },
+        )
+
     def test_sample(self):
         self.validate_identity(
             "SELECT * FROM tbl USING SAMPLE 5",
